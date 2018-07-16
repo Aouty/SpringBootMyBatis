@@ -1,0 +1,82 @@
+集成MyBatis连接数据库
+    1.pom.xml中添加
+        1.1 properties标签里添加：<mybatis-generator.version>1.3.5</mybatis-generator.version>
+        1.2 dependencies标签里添加：
+            <dependency>
+        			<groupId>mysql</groupId>
+        			<artifactId>mysql-connector-java</artifactId>
+        			<scope>runtime</scope>
+        		</dependency>
+
+        		<dependency>
+        			<groupId>org.mybatis.spring.boot</groupId>
+        			<artifactId>mybatis-spring-boot-starter</artifactId>
+        			<version>1.0.0</version>
+        		</dependency>
+                <!-- tkmybatis是在mybatis框架的基础上提供了很多工具，让开发更加高效  -->
+        		<dependency>
+        			<groupId>tk.mybatis</groupId>
+        			<artifactId>mapper-spring-boot-starter</artifactId>
+        			<version>2.0.0</version>
+        		</dependency>
+        	1.3 build plugins 标签里面添加：
+        	    <plugin>
+                				<groupId>org.mybatis.generator</groupId>
+                				<artifactId>mybatis-generator-maven-plugin</artifactId>
+                				<version>${mybatis-generator.version}</version>
+                				<configuration>
+                					<!--配置文件的位置-->
+                					<configurationFile>${basedir}/src/main/resources/generatorConfig.xml</configurationFile>
+                					<verbose>true</verbose>
+                					<overwrite>true</overwrite>
+                				</configuration>
+                			</plugin>
+            1.4 build标签里面添加：
+                <resources>
+                			<resource>
+                				<directory>src/main/java</directory>
+                				<includes>
+                					<include>**/*.properties</include>
+                					<include>**/*.xml</include>
+                					<include>**/*.txt</include>
+                				</includes>
+                				<filtering>false</filtering>
+                			</resource>
+                			<resource>
+                				<directory>src/main/resources</directory>
+                				<includes>
+                					<include>**/*.properties</include>
+                					<include>**/*.xml</include>
+                					<include>**/*.txt</include>
+                				</includes>
+                				<filtering>false</filtering>
+                			</resource>
+                		</resources>
+    2.在application.properties中配置数据源
+        spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+        spring.datasource.url=jdbc:mysql://127.0.0.1:3306/sunlei?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+        spring.datasource.username=root
+        spring.datasource.password=1234
+
+        #mybatis
+        #mybatis.cofig=classpath:mybatis-config.xml
+        mybatis.mapperLocations=classpath:mapper/*.xml
+        #domain object's package
+        mybatis.typeAliasesPackage=com.aouty.pojo
+    3.src/main/resources下添加：mybatis-config.xml和generatorConfig.xml
+    4.点击右侧Maven Projects-->aouty-->Plugins-->mybatis-generator-->mybatis-generator:generate,
+      鼠标右键-->Run Maven Build,就会在相应的包下生成相应的文件了
+    5.在启动类上面加扫描注解：
+        @SpringBootApplication
+        @EnableTransactionManagement
+        /**如果mybatis中service实现类中加入事务注解，需要此处添加该注解 **/
+        @org.mybatis.spring.annotation.MapperScan(basePackages = "com.aouty.mapper") /**不建议在mapper.java上加注解@Mapper**/
+        public class AoutyApplication {
+
+        	public static void main(String[] args) {
+        		SpringApplication.run(AoutyApplication.class, args);
+        	}
+        }
+
+
+
