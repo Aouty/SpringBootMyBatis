@@ -23,8 +23,6 @@ public class PersonController {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    PersonService personService;
 
     @Autowired
     PersonMapper personMapper;
@@ -33,8 +31,8 @@ public class PersonController {
     @GetMapping(value = "/add")
     public Result addOne() {
         Person person = new Person();
-        person.setName("张含舒");
-        person.setDescription("张含舒小仙女");
+        person.setName("Goddess");
+        person.setDescription("Goddess~~~");
         person.setCreateTime(CalendarUtils.getDateTimeString());
         person.setModifyTime(CalendarUtils.getDateTimeString());
         personMapper.insertSelective(person);

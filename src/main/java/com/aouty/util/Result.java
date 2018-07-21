@@ -25,24 +25,18 @@ public class Result {
 
     }
 
-    public Result(String statusCode, Object data) {
-        this.statusCode = statusCode;
-        this.message = "ok";
-        this.data = data;
-    }
-
     public Result(Object data) {
         this.statusCode = "200";
         this.message = "ok";
         this.data = data;
     }
 
-    public static Result build(String statusCode, String message, Object data) {
+    public static Result success(String statusCode, String message, Object data) {
         return new Result(statusCode, message, data);
     }
 
     public static Result success(String statusCode, String message) {
-        return new Result(statusCode,message);
+        return new Result(statusCode, message);
     }
 
     public static Result success(Object data) {
